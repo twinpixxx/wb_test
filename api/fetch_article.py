@@ -2,15 +2,16 @@ import asyncio
 import json
 import httpx
 from api.exceptions import ArticleNotFound
-# from api.redis import get_from_cache, is_cached
+from api.redis_helpers import get_from_cache, is_cached, save_to_cache
 from api.schemas import RequestArticle, ResponseArticle
 
 
 async def fetch_article(article_request: RequestArticle) -> ResponseArticle:
 
     article = json.loads(article_request.json())['article']
-    # if is_cached(article):
-    #     return await get_from_cache(article)
+    if is_cached(article):
+        print('from cache')
+        return get_from_cache(article)
     
     async with httpx.AsyncClient() as client:
         tasks = []
@@ -35,6 +36,8 @@ async def fetch_article(article_request: RequestArticle) -> ResponseArticle:
                     brand=brand,
                     title=title)
                 
+                save_to_cache(article=article, payload=response)
+
                 return response
 
     raise ArticleNotFound

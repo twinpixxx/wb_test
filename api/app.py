@@ -1,18 +1,15 @@
-import asyncio
-import logging
 import api.exceptions
 
-from fastapi import FastAPI, Depends, Body, Request, Response
-from fastapi.encoders import jsonable_encoder
-from fastapi.exception_handlers import request_validation_exception_handler
-from fastapi.exceptions import RequestValidationError
-from starlette.background import BackgroundTasks
+from fastapi import FastAPI, File, Response, UploadFile
 from starlette.middleware.cors import CORSMiddleware
-from starlette.responses import RedirectResponse, JSONResponse
+from starlette.responses import RedirectResponse
 from api.fetch_article import fetch_article
 from api.schemas import HTTPExceptionBody, RequestArticle, ResponseArticle
 
 from api.settings import container_settings
+from api.utils import parse_xlsx
+
+
 app = FastAPI(
     title=container_settings.service_name,
     version=container_settings.version,
@@ -45,9 +42,20 @@ async def load_article(request: RequestArticle) -> ResponseArticle:
                 401: {"model": HTTPExceptionBody},
                 404: {"model": api.exceptions.ArticleNotFound},
           })
-async def load_article_xlsx(request: RequestArticle) -> ResponseArticle:
-    article = await fetch_article(request)
-    return article
+async def load_article_xlsx(file: UploadFile = File(...)) -> list[ResponseArticle]:
+    try:
+        contents = file.file.read()
+        with open(file.filename, 'wb') as f:
+            f.write(contents)
+    finally:
+        file.file.close()
+
+    articles = parse_xlsx(file.filename)
+    response = []
+
+    for article in articles:
+       response.append(await fetch_article(RequestArticle(article=article)))
+    return response
 
 """General functionality"""
 

@@ -6,13 +6,13 @@ class ContainerSettings(BaseSettings):
     logging_level: str = "DEBUG"
     service_name: str = "wb_test"
     version = "0.1.0"
-    web_host: str = "localhost"
+    web_host: str = "0.0.0.0"
     web_port: int = 8000
     autoreload: bool = False
     sentry_dsn: AnyHttpUrl | None = None
     sentry_is_enabled: bool = False
 
-    redis_dsn: RedisDsn = "redis://localhost:6379/1"
+    redis_dsn: RedisDsn = "redis://localhost:6379"
 
     allowed_origins: list[str] = ["*"]
 

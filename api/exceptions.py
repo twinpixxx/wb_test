@@ -23,3 +23,9 @@ class ArticleNotFound(ExtendedHTTPException):
     status_code = status.HTTP_404_NOT_FOUND
     detail = 'Article not found'
     error_code = 'article_not_found'
+
+
+class WrongExt(ExtendedHTTPException):
+    status_code = status.HTTP_405_METHOD_NOT_ALLOWED
+    detail = 'Wrong ext provided'
+    error_code = 'wrong_ext'
