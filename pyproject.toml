@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "wilberries-test"
+version = "0.1.0"
+description = ""
+authors = ["Anton Borushko <twinpixxx2005@gmail.com>"]
+readme = "README.md"
+packages = [{include = "wilberries_test"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.92.0"
+pydantic = "^1.10.5"
+uvicorn = "^0.20.0"
+celery = "^5.2.7"
+redis = "^4.5.1"
+alembic = "^1.10.0"
+
+[tool.poetry.group.dev.dependencies]
+ipython = "^8.11.0"
+pytest = "^7.2.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
