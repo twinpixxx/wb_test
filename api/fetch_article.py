@@ -10,7 +10,6 @@ async def fetch_article(article_request: RequestArticle) -> ResponseArticle:
 
     article = json.loads(article_request.json())['article']
     if is_cached(article):
-        print('from cache')
         return get_from_cache(article)
     
     async with httpx.AsyncClient() as client:
