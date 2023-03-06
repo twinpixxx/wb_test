@@ -37,6 +37,7 @@ COPY --from=builder /runtime /usr/local
 COPY ./api /app/api
 COPY pyproject.toml /app/pyproject.toml
 
+COPY [".env", "/app/.env.native"]
 WORKDIR /app
 ENV PYTHONPATH "${PYTHONPATH}:/app/"
 # we need to start both FastAPI and Faust worker inside one container

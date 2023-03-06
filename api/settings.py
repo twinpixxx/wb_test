@@ -17,7 +17,7 @@ class ContainerSettings(BaseSettings):
     allowed_origins: list[str] = ["*"]
 
     class Config:
-        env_file = ".env"  # PYTHONPATH must be set to the directory above
+        env_file = ".env.native"  # PYTHONPATH must be set to the directory above
 
 
 container_settings = ContainerSettings()
