@@ -20,27 +20,13 @@ app = FastAPI(
     redoc_url=None,
 )
 
-# app.add_middleware(
-#     CORSMiddleware,
-#     allow_origins=container_settings.allowed_origins,
-#     allow_credentials=True,
-#     allow_methods=["*"],
-#     allow_headers=["*"],
-# )
-
-
-# @app.exception_handler(exceptions.ExtendedHTTPException)
-# async def custom_http_exception_handler(request, exc: exceptions.ExtendedHTTPException):
-#     content = jsonable_encoder(exc, exclude_none=True, exclude={'status_code'})
-#     logging.info(f" {exc.__class__.__name__}: {content}")
-#     return JSONResponse(content=content, status_code=exc.status_code)
-
-
-# @app.exception_handler(RequestValidationError)
-# async def logging_validation_exception_handler(request, exc: RequestValidationError):
-#     logging.info(f"The client sent invalid data!: {exc}\nClient data: {exc.body}")
-#     return await request_validation_exception_handler(request, exc)
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=container_settings.allowed_origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.post("/api/v1/article",
           responses={
